@@ -45,6 +45,7 @@ The additional workstation significantly expanded the available compute and stor
 - Skyline – Cloud Dashboard
 - Horizon – Administrative Dashboard
 - Heat – Infrastructure as Code
+- Trove - DataBase as a Service
 
 **Networking**
 - Open vSwitch (OVS)
