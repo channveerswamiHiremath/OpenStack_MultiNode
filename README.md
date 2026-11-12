@@ -102,7 +102,7 @@ Deployed a separate Kubernetes cluster on four virtual machines provisioned thro
 Additional details:
 
 - Hosted containerized workloads.
-- Deployed Coder within Kubernetes.
+- Deployed Coder & Chatwoot within Kubernetes.
 - Configured remote Kubernetes API access through Cloudflare Tunnel.
 - Enabled authenticated access from external machines using `kubectl` and appropriately scoped kubeconfig files.
 - Kubernetes dashboard: https://kubernetes.openstacklab.me
