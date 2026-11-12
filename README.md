@@ -1,212 +1,186 @@
-# Multi-Node Private Cloud Infrastructure Using OpenStack and Kolla-Ansible
 
-## Project Overview
+# Multi-Node OpenStack Private Cloud
 
-Designed, deployed and expanded a multi-node private cloud infrastructure using OpenStack Antelope (2023.1) and Kolla-Ansible on Ubuntu Server 22.04.
+A multi-node private cloud infrastructure built using **OpenStack Antelope (2023.1)**, **Kolla-Ansible**, and **Ubuntu Server 22.04**. The platform provides multi-tenant IaaS and additional cloud services for students.
 
-The project started with a three-node bare-metal deployment consisting of Controller, Compute1 and Storage nodes. It was later expanded by integrating a high-performance Dell Precision 7960 workstation as an additional Compute2 node.
+## Overview
 
-The infrastructure was further extended into a multi-tenant cloud platform, providing virtual machine provisioning, networking, object storage, monitoring, database access and developer services for students.
+This project focuses on building and expanding a private cloud environment using multiple physical servers. The infrastructure provides virtual machine provisioning, networking, storage, monitoring, and additional services.
+
+The platform was initially deployed across three bare-metal nodes and later expanded with a fourth compute node.
 
 ## Infrastructure Architecture
 
-The cloud infrastructure consists of four physical nodes:
+| Node | Role |
+|---|---|
+| Controller | OpenStack control-plane services |
+| Compute1 | Virtual machine workloads |
+| Storage | Storage services |
+| Compute2 | Additional compute capacity |
 
-- **Controller Node:** Hosts OpenStack control-plane and API services.
-- **Compute1 Node:** Provides virtual machine compute resources.
-- **Storage Node:** Provides storage resources for the cloud environment.
-- **Compute2 Node:** Additional compute capacity provided by a Dell Precision 7960 workstation from Samsung Innovation Lab.
+### Compute2 Hardware
 
-### Compute2 Hardware Specifications
+A Dell Precision 7960 Tower workstation provided by Samsung Innovation Lab was integrated as the additional compute node.
 
-- Processor: Intel Xeon w9-3475X
-- CPU: 36 Cores / 72 Threads
-- RAM: 256 GB
-- Storage: Approximately 13 TB raw capacity
+- **Processor:** Intel Xeon w9-3475X (36 Cores / 72 Threads)
+- **Memory:** 256 GB RAM
+- **Storage:** Approximately 13 TB raw capacity
 
-The additional workstation significantly expanded the available compute and storage resources.
+## OpenStack Services
 
-## Technologies Used
+Deployed using Kolla-Ansible on Ubuntu Server 22.04.
 
-**Cloud Infrastructure**
-- OpenStack Antelope (2023.1)
-- Kolla-Ansible
-- Ansible
-- Docker
-- Ubuntu Server 22.04
+| Service | Purpose |
+|---|---|
+| Nova | Compute and virtual machine management |
+| Neutron | Network management |
+| Keystone | Identity and authentication |
+| Glance | Virtual machine images |
+| Cinder | Block storage |
+| Swift | Object storage |
+| Skyline | Cloud dashboard |
+| Horizon | Administrative dashboard |
+| Heat | Infrastructure orchestration |
 
-**OpenStack Services**
-- Nova – Compute
-- Neutron – Networking
-- Keystone – Identity
-- Glance – Image Management
-- Cinder – Block Storage
-- Swift – Object Storage
-- Skyline – Cloud Dashboard
-- Horizon – Administrative Dashboard
-- Heat – Infrastructure as Code
-- Trove - DataBase as a Service
+## Networking
 
-**Networking**
+Configured cloud networking using:
+
 - Open vSwitch (OVS)
-- VXLAN
-- Provider Networks
-- Floating IPs
-- Virtual Routers
-- Cloudflare Tunnel
+- VXLAN tenant networks
+- Provider networks
+- Network routing
+- Floating IP configuration
+- Tenant network isolation
 
-**Monitoring and Storage**
-- Prometheus
-- Grafana
-- Nextcloud
-- OpenStack Swift
+## Cloud Services
 
-**DevOps and Developer Services**
-- GitLab
-- Jenkins
-- Dokku
-- Jupyter
-- Keycloak
-- Coder
-- Kubernetes
+### 1. Student Cloud Dashboard
 
-## Cloud Services Provided
+Skyline provides the student-facing cloud dashboard.
 
-### 1. Cloud Management Dashboard
+- https://cloud.openstacklab.me
 
-Configured OpenStack Skyline as the primary user-facing dashboard for students.
+Horizon is reserved for cloud-provider administration.
 
-- Hosted at: https://cloud.openstacklab.me
-- Horizon administrative access restricted to cloud providers.
+### 2. Personal Cloud Storage
 
-### 2. Object Storage as a Service
+Integrated OpenStack Swift with Nextcloud to provide personal file storage with account-level user separation.
 
-Integrated OpenStack Swift with Nextcloud to provide a familiar cloud storage experience.
+- Web access: https://drive.openstacklab.me
+- Mobile access through Nextcloud Android and iOS applications.
 
-- Hosted at: https://drive.openstacklab.me
-- Student-specific storage access and isolation.
-- Web-based file management.
-- Android and iOS mobile application support.
+### 3. Infrastructure Monitoring
 
-### 3. Monitoring as a Service
+Implemented Prometheus and Grafana for infrastructure and workload monitoring.
 
-Implemented Prometheus and Grafana for infrastructure and virtual machine monitoring.
+- Dashboard: https://monitor.openstacklab.me
+- User-scoped dashboards for students.
+- Separate administrative monitoring.
 
-- Hosted at: https://monitor.openstacklab.me
-- User-scoped dashboards for individual projects and virtual machines.
-- 24 monitoring panels configured for student-facing dashboards.
-- Extended administrative monitoring for cloud operators.
+### 4. Database-as-a-Service
 
-### 4. Database as a Service
+Configured relational Database-as-a-Service capabilities.
 
-Configured relational database environments for student projects.
+- https://db.openstacklab.me
 
-- Hosted at: https://db.openstacklab.me
-- Provides database access for application development.
+### 5. Kubernetes as a Service (KaaS)
 
-### 5. Infrastructure as Code
+Deployed a separate Kubernetes cluster on four virtual machines provisioned through OpenStack.
 
-Tested OpenStack Heat templates for declarative infrastructure provisioning, enabling resources to be created using predefined configuration templates.
+| Component | Configuration |
+|---|---|
+| Control Plane | 1 VM |
+| Worker Nodes | 3 VMs |
+| CPU per VM | 6 vCPUs |
+| RAM per VM | 24 GB |
+| Kubernetes Version | v1.30.14 |
+| Cluster Setup | kubeadm |
+| Container Runtime | containerd |
+| CNI | Calico |
 
-## DevOps and Application Hosting
+Additional details:
 
-Integrated GitLab, Jenkins and Dokku to implement an application deployment workflow.
+- Hosted containerized workloads.
+- Deployed Coder within Kubernetes.
+- Configured remote Kubernetes API access through Cloudflare Tunnel.
+- Enabled authenticated access from external machines using `kubectl` and appropriately scoped kubeconfig files.
+- Kubernetes dashboard: https://kubernetes.openstacklab.me
 
-The workflow:
+### 6. Jupyter Service
 
-1. User pushes application code to GitLab.
-2. Jenkins detects the repository update.
-3. Jenkins executes the configured pipeline.
-4. The deployment workflow forwards the application to Dokku.
-5. Dokku hosts the deployed application.
+Deployed Jupyter with Keycloak authentication.
 
-Additional developer services:
+## Remote Access
 
-- **Jupyter:** Hosted development and notebook environment with Keycloak authentication.
-- **Coder:** Browser-based development environment deployed within Kubernetes.
+Configured Cloudflare Tunnel to provide remote access to selected cloud services through the custom domain:
 
-## Remote Access and Networking
+- https://openstacklab.me
 
-Configured Cloudflare Tunnel to provide remote access to selected cloud services using the custom domain:
+The tunnel also supports remote access to the Kubernetes API endpoint.
 
-**openstacklab.me**
+## Infrastructure as Code
 
-Configured dedicated subdomains for Skyline, Nextcloud, Grafana and database access.
+Tested OpenStack Heat templates for infrastructure orchestration and automated resource provisioning.
 
-This allows authorized users to access selected services remotely without directly exposing each service through public inbound networking.
+## Resilience and High Availability
 
-## Kubernetes Integration
+The infrastructure uses multiple nodes and incorporates logical resilience considerations.
 
-Deployed a separate four-node Kubernetes cluster using virtual machines provisioned through OpenStack.
+However:
+- Full OpenStack control-plane redundancy was not implemented due to hardware resource constraints.
+- The Kubernetes cluster has a single control-plane node.
+- Workload recovery was tested by deleting an NGINX pod and observing its automatic replacement by the Kubernetes ReplicaSet.
 
-The cluster consists of:
+Application continuity was observed during this test; this does not guarantee zero downtime.
 
-- 1 Control Plane Node
-- 3 Worker Nodes
-- 24 GB RAM and 6 vCPUs per virtual machine
+## Testing and Validation
 
-Technologies used:
+- Virtual machine provisioning through OpenStack.
+- Tenant and provider network configuration.
+- Routing and floating IP connectivity.
+- Swift and Nextcloud storage integration.
+- OpenStack Heat template testing.
+- Kubernetes workload deployment.
+- NGINX pod deletion and automatic recovery testing.
+- Remote Kubernetes API connectivity.
 
-- Kubernetes v1.30.14
-- kubeadm
-- containerd
-- Calico
+## Technology Stack
 
-Tested application deployment, workload replication, pod recovery and self-healing behaviour.
+**Cloud Infrastructure:** OpenStack Antelope, Kolla-Ansible, Ansible
 
-The Kubernetes cluster is an independent workload hosted on OpenStack and is documented separately as another project.
+**Virtualization & Containers:** Docker, Kubernetes, containerd
 
-## High Availability Considerations
+**Networking:** Open vSwitch, Neutron, VXLAN, Calico
 
-Designed the platform with logical high-availability and resilience principles.
+**Storage:** Cinder, Swift, Nextcloud
 
-Workload replication and recovery behaviour were tested in the Kubernetes environment.
+**Monitoring:** Prometheus, Grafana
 
-A fully redundant OpenStack control plane was not implemented due to available hardware resource constraints. Therefore, the deployment demonstrates multi-node infrastructure and HA-oriented design considerations rather than a fully redundant control-plane architecture.
+**Orchestration:** OpenStack Heat
 
-## Implementation Challenges
+**Identity & Access:** Keystone, Keycloak, Kubernetes RBAC
 
-During implementation, several infrastructure and configuration challenges were encountered:
+**Remote Access:** Cloudflare Tunnel
 
-- Kolla-Ansible deployment and Ansible dependency issues.
-- Open vSwitch networking and tenant connectivity.
-- VXLAN networking and routing configuration.
-- Storage service configuration and integration.
-- Integration of an additional physical compute node.
-- Secure remote access through Cloudflare Tunnel.
-- Multi-tenant access and user-specific monitoring configuration.
+**Additional Services:** Jupyter, Coder
 
-These challenges provided practical experience in troubleshooting distributed cloud infrastructure.
+**Operating System:** Ubuntu Server 22.04
 
-## Results and Outcomes
+## Project Highlights
 
-- Successfully deployed a multi-node OpenStack private cloud.
-- Expanded the original three-node environment with a fourth physical Compute2 node.
-- Integrated high-performance hardware with 256 GB RAM.
-- Provided cloud dashboards and isolated storage for student users.
-- Implemented user-scoped virtual machine monitoring.
-- Configured relational database access.
-- Tested template-based infrastructure provisioning.
-- Integrated GitLab, Jenkins and Dokku for application deployment.
-- Deployed additional developer services.
-- Hosted an independent Kubernetes cluster on OpenStack virtual machines.
-- Enabled remote access to selected cloud services through Cloudflare Tunnel.
+- Built and expanded a multi-node OpenStack private cloud.
+- Integrated additional enterprise-grade compute hardware.
+- Implemented multi-tenant networking and storage.
+- Provided student-facing cloud services.
+- Integrated Nextcloud with OpenStack Swift.
+- Deployed a separate Kubernetes cluster on OpenStack.
+- Enabled remote access to selected cloud services.
+- Implemented infrastructure monitoring using Prometheus and Grafana.
 
-## Learning Outcomes
+---
 
-- Practical understanding of distributed OpenStack architecture.
-- Experience with multi-node cloud deployment and scaling.
-- Understanding of software-defined networking using Open vSwitch and VXLAN.
-- Experience with cloud storage integration and multi-tenancy.
-- Hands-on experience with monitoring and observability.
-- Understanding of Infrastructure as Code and DevOps workflows.
-- Experience integrating Kubernetes with private cloud infrastructure.
-- Practical Linux system administration and infrastructure troubleshooting.
-
-## Conclusion
-
-This project demonstrates the design, deployment and expansion of a multi-node private cloud infrastructure using OpenStack.
-
-By integrating additional physical compute resources and extending the platform with storage, monitoring, database and developer services, the infrastructure evolved into a shared cloud environment for student workloads.
-
-The project provided practical experience in cloud infrastructure engineering, distributed systems, networking, storage, automation, monitoring and platform services.
+**Project:** Multi-Node OpenStack Private Cloud  
+**Platform:** OpenStack Antelope (2023.1)  
+**Deployment:** Kolla-Ansible  
+**Environment:** Ubuntu Server 22.04
