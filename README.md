@@ -166,7 +166,7 @@ Application continuity was observed during this test; this does not guarantee ze
 
 **Remote Access:** Cloudflare Tunnel
 
-**Additional Services:** Jupyter, Coder
+**Additional Services:** Jupyter, Coder, Chatwoot.
 
 **Operating System:** Ubuntu Server 22.04
 
