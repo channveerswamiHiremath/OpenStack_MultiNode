@@ -110,7 +110,7 @@ Additional details:
 ### 6. Developer Service's
 
 - Deployed Jupyter with keycloak authentication.
-- Deploy Coder for developer environment.
+- Deployed Coder for developer environment.
 - Deployed Chatwoot to increase developer productivity and efficiency. 
 
 ## Remote Access
