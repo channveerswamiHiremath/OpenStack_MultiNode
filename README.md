@@ -109,9 +109,9 @@ Additional details:
 
 ### 6. Developer Services
 
-- Deployed Jupyter with keycloak authentication(Available: jupyter.openstacklab.me)
-- Deployed Coder for developer environment(Available: coder.kuberneteslab.me).
-- Deployed Chatwoot to increase developer productivity and efficiency(Available: chatwoot.kuberneteslab.me). 
+- Deployed Jupyter with keycloak authentication(Available: https://jupyter.openstacklab.me)
+- Deployed Coder for developer environment(Available: https://coder.kuberneteslab.me).
+- Deployed Chatwoot to increase developer productivity and efficiency(Available: https://chatwoot.kuberneteslab.me). 
 
 ## Remote Access
 
