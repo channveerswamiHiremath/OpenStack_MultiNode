@@ -107,9 +107,11 @@ Additional details:
 - Enabled authenticated access from external machines using `kubectl` and appropriately scoped kubeconfig files.
 - Kubernetes dashboard: https://kubernetes.openstacklab.me
 
-### 6. Jupyter Service
+### 6. Developer Service's
 
-Deployed Jupyter with Keycloak authentication.
+- Deployed Jupyter with keycloak authentication.
+- Deploy Coder for developer environment.
+- Deployed Chatwoot to increase developer productivity and efficiency. 
 
 ## Remote Access
 
