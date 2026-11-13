@@ -116,6 +116,7 @@ Deployed Jupyter with Keycloak authentication.
 Configured Cloudflare Tunnel to provide remote access to selected cloud services through the custom domain:
 
 - https://openstacklab.me
+- https://kuberneteslab.me
 
 The tunnel also supports remote access to the Kubernetes API endpoint.
 
