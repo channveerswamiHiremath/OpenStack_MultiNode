@@ -84,7 +84,7 @@ Configured relational Database-as-a-Service capabilities.
 
 - https://db.openstacklab.me
 
-### 5. Kubernetes as a Service (KaaS)
+### 5. Kubernetes(k8s) as a Service (KaaS)
 
 Deployed a separate Kubernetes cluster on four virtual machines provisioned through OpenStack.
 
